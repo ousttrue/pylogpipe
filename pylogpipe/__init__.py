@@ -1,7 +1,7 @@
 import pathlib
 import asyncio
 import sys
-import signal
+# import signal
 import subprocess
 import logging
 from typing import BinaryIO, Callable
@@ -17,8 +17,6 @@ VERSION = [0, 0, 1]
 # if sys.platform == "win32":
 #     import signal
 #     signal.signal(signal.SIGINT, signal.SIG_DFL)
-
-
 async def async_stream_connector(name: str, r: BinaryIO, w: BinaryIO,
                                  running: Callable):
     logger = logging.getLogger(name)
@@ -78,12 +76,12 @@ def setup_logger(logfile):
 
 def main():
     # launch process
-    self = pathlib.Path(__file__).resolve()
+    self = pathlib.Path(sys.argv[0]).resolve()
 
-    logfile = self.parent / (self.stem + '.log')
+    logfile = self.parent / 'pylogpipe.log'
     setup_logger(logfile)
 
-    conf = self.parent / (self.stem + '.conf')
+    conf = self.parent / 'pylogpipe.conf'
     cmd = conf.read_text(encoding='utf-8').strip()
     p = subprocess.Popen([cmd] + sys.argv[1:],
                          stdout=subprocess.PIPE,
